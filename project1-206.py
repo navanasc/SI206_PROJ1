@@ -15,12 +15,16 @@ def getData(file):
 
 	#First line is going to contain all of the keys needed to construct dictionaries.
 	line = inFile.readline()
+	# Strip newline character
+	line = line.strip("\n")
 	#Split at ',' to get a list of keys, save them in a list to be re-used to each dictionary.
 	keys_list = line.split(',')
 	#Create an empty list to carry all the dictionaries that will be constructed from rows of values.
 	dicts_list = []
 	#Get the next line. While there is a next line, keep looping.
 	line = inFile.readline()
+	# Strip newline character
+	line = line.strip("\n")
 	#Create a loop.
 	while line:
 		#Create a dictionary that will hold the values from line with keys from keys_list.
@@ -28,12 +32,14 @@ def getData(file):
 		#Split line into values at comma.
 		values = line.split(',')
 		#Assign values to the correct keys.
-		for i in range(len(keys_list)-1):
+		for i in range(len(keys_list)):
 			values_dict[keys_list[i]] = values[i]
 		#Append to dictionary list.
 		dicts_list.append(values_dict)
 		#Read next line to update condition of the while loop.
 		line = inFile.readline()
+		# Strip newline character
+		line = line.strip("\n")
 	#Close file.
 	inFile.close()
 	#Return list of dictionary objects.
@@ -44,7 +50,15 @@ def mySort(data,col):
 #Input: list of dictionaries and col (key) to sort on
 #Output: Return the first item in the sorted list as a string of just: firstName lastName
 
-	pass
+	#Sort the list based on key col using lambda temporary function.
+	#Make sure col is a string.
+	col = str(col)
+	#Note: x is the individual dictionaries in the list of dictionary objects data.
+	sorted_data = sorted(data, key = lambda x: (x[col]))
+	#Create a return string that will contain firstName and lastName of the first item in the sorted list.
+	ret_string = sorted_data[0]["First"] + " " + sorted_data[0]["Last"]
+	#Return the return string.
+	return ret_string
 
 
 def classSizes(data):
@@ -53,16 +67,47 @@ def classSizes(data):
 # Output: Return a list of tuples sorted by the number of students in that class in
 # descending order
 # [('Senior', 26), ('Junior', 25), ('Freshman', 21), ('Sophomore', 18)]
-
-	pass
+	#Create variables to keep count of instances of each class standing.
+	freshman_count = 0
+	sophomore_count = 0
+	junior_count = 0
+	senior_count = 0
+	#Traverse the list of dictionaries, access each dict with key "Class."
+	#Count instances of each class standing with if statments.
+	for person_dict in data:
+		if person_dict["Class"] == "Freshman":
+			freshman_count += 1
+		elif person_dict["Class"] == "Sophomore":
+			sophomore_count += 1
+		elif person_dict["Class"] == "Junior":
+			junior_count += 1
+		elif person_dict["Class"] == "Senior":
+			senior_count += 1
+	#Create a list of all (Class, count) tuples, and sort in descending order.
+	tup_list = [("Freshman", freshman_count), ("Sophomore", sophomore_count), ("Junior", junior_count), ("Senior", senior_count)]
+	sorted_list = sorted(tup_list, key = lambda x: x[1], reverse = True)
+	#Return sorted list.
+	return sorted_list
 
 
 def findMonth(a):
 # Find the most common birth month form this data
 # Input: list of dictionaries
 # Output: Return the month (1-12) that had the most births in the data
-
-	pass
+	#Create a dictionary to hold all the months in a year and their respective counts.
+	months_dict = {"1":0, "2":0, "3":0, "4":0, "5":0, "6":0, "7":0, "8":0, "9":0, "10":0, "11":0, "12":0}
+	#Traverse the list of dictionaries, access with key "DOB"
+	for person_dict in a:
+		#Within each DOB, split at "/", and the first value will be the month.
+		DOB_vals = person_dict["DOB"].split("/")
+		month = str(DOB_vals[0])
+		#Use the month number as the key to access months_dict, and update count.
+		months_dict[month] += 1
+	#Sort month dictionary by count, and return the month with the highest count.
+	#dictionary items() method will give a list of pair of tuples that can be sorted.
+	sorted_months_list = sorted(months_dict.items(), key = lambda x: x[1], reverse = True)
+	#Return the highest-count month number as integer.
+	return int(sorted_months_list[0][0])
 
 def mySortPrint(a,col,fileName):
 #Similar to mySort, but instead of returning single
