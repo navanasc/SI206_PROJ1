@@ -138,8 +138,34 @@ def findAge(a):
 # Output: Return the average age of the students and round that age to the nearest
 # integer.  You will need to work with the DOB and the current date to find the current
 # age in years.
-	
-	pass
+	#Create a list to hold all of the ages in days.
+	age_list = []
+	#Get today's date, clean and split into year month and date components.
+	today = date.today()
+	today_components = str(today).split('-')
+	curr_year = today_components[0]
+	curr_month = today_components[1]
+	curr_day = today_components[2]
+	#Traverse list of dict a, using key "DOB", and split at '/'
+	for person_dict in a:
+		DOB = person_dict["DOB"]
+		DOB_components = DOB.split("/")
+		birth_year = DOB_components[2]
+		birth_month = DOB_components[0]
+		birth_day = DOB_components[1]
+		#Using the different date components, find the difference between person's DOB and today's day.
+		birth_date = date(int(birth_year), int(birth_month), int(birth_day))
+		curr_date = date(int(curr_year), int(curr_month), int(curr_day))
+		age_difference = curr_date - birth_date
+		age_in_days = age_difference.days
+		#Save age in days into the list.
+		age_list.append(age_in_days)
+
+	#Find the average of all ages in days from the age list and return the average in int.
+	average_age_in_days = sum(age_list)//len(age_list)
+	#Convert to years and round to the nearest integer.
+	average_age_in_years = int(average_age_in_days/365)
+	return average_age_in_years
 
 
 ################################################################
