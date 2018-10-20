@@ -115,8 +115,22 @@ def mySortPrint(a,col,fileName):
 # as fist,last,email
 #Input: list of dictionaries, col (key) to sort by and output file name
 #Output: No return value, but the file is written
-
-	pass
+	#Read fileName for writing output.
+	outFile = open(fileName, "w")
+	#Sort the list based on key col using lambda temporary function.
+	#Make sure col is a string.
+	col = str(col)
+	#Note: x is the individual dictionaries in the list of dictionary objects a.
+	sorted_dicts_list = sorted(a, key = lambda x: (x[col]))
+	for item in sorted_dicts_list:
+		#Get first name, last name, and email for writing output.
+		first = item["First"]
+		last = item["Last"]
+		email = item["Email"]
+		#Write output into outfile in the correct format.
+		outFile.write(first + ',' + last + ',' + email + '\n')
+	#Close file.
+	outFile.close()
 
 def findAge(a):
 # def findAge(a):
@@ -124,7 +138,7 @@ def findAge(a):
 # Output: Return the average age of the students and round that age to the nearest
 # integer.  You will need to work with the DOB and the current date to find the current
 # age in years.
-
+	
 	pass
 
 
@@ -149,7 +163,7 @@ def main():
 	total = 0
 	print("Read in Test data and store as a list of dictionaries")
 	data = getData('P1DataA.csv')
-	data2 = getData('P1DataB.csv')
+	data2 = getData('P1DataB2.csv')
 	total += test(type(data),type([]),50)
 
 	print()
