@@ -5,12 +5,39 @@ from datetime import date
 
 
 def getData(file):
-# get a list of dictionary objects from the file
-#Input: file name
-#Ouput: return a list of dictionary objects where
-#the keys are from the first row in the data. and the values are each of the other rows
+	# get a list of dictionary objects from the file
+	#Input: file name
+	#Ouput: return a list of dictionary objects where
+	#the keys are from the first row in the data. and the values are each of the other rows
 
-	pass
+	#Open file for reading.
+	inFile = open(file, "r")
+
+	#First line is going to contain all of the keys needed to construct dictionaries.
+	line = inFile.readline()
+	#Split at ',' to get a list of keys, save them in a list to be re-used to each dictionary.
+	keys_list = line.split(',')
+	#Create an empty list to carry all the dictionaries that will be constructed from rows of values.
+	dicts_list = []
+	#Get the next line. While there is a next line, keep looping.
+	line = inFile.readline()
+	#Create a loop.
+	while line:
+		#Create a dictionary that will hold the values from line with keys from keys_list.
+		values_dict = {}
+		#Split line into values at comma.
+		values = line.split(',')
+		#Assign values to the correct keys.
+		for i in range(len(keys_list)-1):
+			values_dict[keys_list[i]] = values[i]
+		#Append to dictionary list.
+		dicts_list.append(values_dict)
+		#Read next line to update condition of the while loop.
+		line = inFile.readline()
+	#Close file.
+	inFile.close()
+	#Return list of dictionary objects.
+	return dicts_list
 
 def mySort(data,col):
 # Sort based on key/column
